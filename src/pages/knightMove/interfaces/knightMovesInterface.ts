@@ -4,3 +4,5 @@ export interface INextMove {
   yOperator: string;
   yAmount: number;
 }
+
+export type IPosition = [number, number];

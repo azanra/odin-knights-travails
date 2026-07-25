@@ -1,6 +1,7 @@
+import type { IPosition } from "./interfaces/knightMovesInterface.ts";
 import knightMovesUtils from "./utils/knightMovesUtils.ts";
 
-const knightMoves = (startPosition: number[], targetPosition: number[]) => {
+const knightMoves = (startPosition: IPosition, targetPosition: IPosition) => {
   return knightMovesUtils.levelOrderTraversal(startPosition, targetPosition);
 };
 

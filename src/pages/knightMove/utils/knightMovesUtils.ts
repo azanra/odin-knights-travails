@@ -1,32 +1,31 @@
 import NEXT_MOVE from "../constants/knightMovesConst.ts";
-import type { INextMove } from "../interfaces/knightMovesInterface.ts";
+import type {
+  INextMove,
+  IPosition,
+} from "../interfaces/knightMovesInterface.ts";
 
 const knightMovesUtils = (() => {
   const levelOrderTraversal = (
-    startPosition: number[],
-    targetPosition: number[],
+    startPosition: IPosition,
+    targetPosition: IPosition,
   ) => {
     const queue = [];
     queue.push(startPosition);
 
     while (queue.length !== 0) {
       const firstItem = queue[0];
-      const validMove = getValidMove(startPosition);
+      if (!firstItem) break;
+
+      const possibleMove = getNextPossibleMove(firstItem);
     }
   };
 
-  const getValidMove = (startPosition: number[]) => {
-    const possibleMove = NEXT_MOVE.map((move) => [
-      ...getNextMove(startPosition, move),
-    ]);
-
-    console.log(possibleMove);
+  const getNextPossibleMove = (startPosition: IPosition) => {
+    return NEXT_MOVE.map((move) => [...getNextMove(startPosition, move)]);
   };
 
-  const getNextMove = (position: number[], nextMove: INextMove) => {
+  const getNextMove = (position: IPosition, nextMove: INextMove) => {
     const [x, y] = position;
-
-    if (x === undefined || y === undefined) return [null, null];
 
     return [
       handleNextMove(x, nextMove.xOperator, nextMove.xAmount),
