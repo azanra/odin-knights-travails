@@ -13,17 +13,34 @@ const knightMovesUtils = (() => {
     queue.push(startPosition);
 
     const visited: IPosition[] = [];
+    let edgeList: IPosition[][] = [];
 
     while (queue.length !== 0) {
       const firstItem = queue.shift();
       if (!firstItem) break;
 
+      if (JSON.stringify(firstItem) === JSON.stringify(targetPosition)) {
+        visited.push(firstItem);
+        break;
+      }
+
       const possibleMove = getNextPossibleMove(firstItem);
       const validMove = getValidMove(possibleMove, visited);
 
+      edgeList = [...edgeList, ...getEdgeList(firstItem, validMove)];
       queue = [...queue, ...validMove];
+      console.log("first item:", firstItem);
+      console.log("valid move: ", validMove);
+      console.log("queue:", queue);
+      console.log("visited:", visited);
+      console.log("edge list: ", edgeList);
+      console.log("=========-======= \n");
+
       visited.push(firstItem);
     }
+
+    console.log(visited);
+    console.log(edgeList);
   };
 
   const getNextPossibleMove = (startPosition: IPosition): IPosition[] => {
@@ -64,6 +81,9 @@ const knightMovesUtils = (() => {
 
     return indexOccurrence !== -1;
   };
+
+  const getEdgeList = (firstItem: IPosition, validMove: IPosition[]) =>
+    validMove.map((move) => [firstItem, move]);
 
   return { levelOrderTraversal };
 })();
