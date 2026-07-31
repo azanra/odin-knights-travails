@@ -29,18 +29,13 @@ const knightMovesUtils = (() => {
 
       edgeList = [...edgeList, ...getEdgeList(firstItem, validMove)];
       queue = [...queue, ...validMove];
-      console.log("first item:", firstItem);
-      console.log("valid move: ", validMove);
-      console.log("queue:", queue);
-      console.log("visited:", visited);
-      console.log("edge list: ", edgeList);
-      console.log("=========-======= \n");
 
       visited.push(firstItem);
     }
 
-    console.log(visited);
-    console.log(edgeList);
+    return {
+      edgeList,
+    };
   };
 
   const getNextPossibleMove = (startPosition: IPosition): IPosition[] => {
@@ -85,7 +80,51 @@ const knightMovesUtils = (() => {
   const getEdgeList = (firstItem: IPosition, validMove: IPosition[]) =>
     validMove.map((move) => [firstItem, move]);
 
-  return { levelOrderTraversal };
+  const traceBackEdgeList = (
+    targetPosition: IPosition,
+    edgeList: IPosition[][],
+  ) => {
+    const stringTarget = JSON.stringify(targetPosition);
+
+    const currentIndex = edgeList.findIndex((edge) => {
+      const stringCurrentEdge = JSON.stringify(edge);
+      const currentEdgeIndex = stringCurrentEdge.indexOf(stringTarget);
+
+      return currentEdgeIndex !== -1;
+    });
+
+    const currentEdge = edgeList[currentIndex];
+
+    return {
+      currentTargetIndex: currentIndex,
+      connectedVertex: currentEdge?.[0],
+    };
+  };
+
+  const getShortestPath = ({
+    startPosition,
+    targetPosition,
+    edgeList,
+  }: {
+    startPosition: IPosition;
+    targetPosition: IPosition;
+    edgeList: IPosition[][];
+  }) => {
+    const visitedPath: IPosition[] = [];
+    let currentTarget = targetPosition;
+
+    while (currentTarget !== startPosition) {
+      const { connectedVertex } = traceBackEdgeList(currentTarget, edgeList);
+      if (!connectedVertex) break;
+
+      visitedPath.push(currentTarget);
+      currentTarget = connectedVertex;
+    }
+
+    return [...visitedPath, startPosition];
+  };
+
+  return { levelOrderTraversal, traceBackEdgeList, getShortestPath };
 })();
 
 export default knightMovesUtils;
