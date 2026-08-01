@@ -7,13 +7,13 @@ const knightMoves = (startPosition: IPosition, targetPosition: IPosition) => {
     targetPosition,
   );
 
-  const shortestPath = knightMovesUtils.getShortestPath({
+  const { shortestPath } = knightMovesUtils.getShortestPath({
     startPosition,
     targetPosition,
     edgeList,
   });
 
-  console.log({ shortestPath });
+  knightMovesUtils.printTheShortestPath(shortestPath);
 };
 
 export default knightMoves;

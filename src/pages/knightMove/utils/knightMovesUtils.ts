@@ -96,7 +96,6 @@ const knightMovesUtils = (() => {
     const currentEdge = edgeList[currentIndex];
 
     return {
-      currentTargetIndex: currentIndex,
       connectedVertex: currentEdge?.[0],
     };
   };
@@ -121,10 +120,20 @@ const knightMovesUtils = (() => {
       currentTarget = connectedVertex;
     }
 
-    return [...visitedPath, startPosition];
+    return {
+      shortestPath: [...visitedPath, startPosition].toReversed(),
+    };
   };
 
-  return { levelOrderTraversal, traceBackEdgeList, getShortestPath };
+  const printTheShortestPath = (shortestPath: IPosition[]) => {
+    console.log(
+      `=> You made it in ${shortestPath.length - 1} moves!, Here's your path: `,
+    );
+
+    shortestPath.forEach((path) => console.log(`${path}`));
+  };
+
+  return { levelOrderTraversal, getShortestPath, printTheShortestPath };
 })();
 
 export default knightMovesUtils;
